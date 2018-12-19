@@ -10,13 +10,14 @@ matrix_cols = 32
 cell_size = 30
 cell_margin = 1
 
-snake_coor = [(2, 3), (2, 2)]
+snake_coor = [(2, 4), (2, 3), (2, 2)] #start point
 snake_dir = 'right'
 
 apple_point = None
 
 color_bg = (50, 50, 50)
-color_cell_empty = (0, 0, 255)
+color_text = (255, 255, 0)
+color_cell_empty = (50, 50, 255)
 color_cell_snakeHead = (255, 0, 0)
 color_cell_snakeBody = (0, 255, 0)
 color_cell_apple = (255, 255, 255)
@@ -30,6 +31,9 @@ gameSpeed = fps * 0.25
 clock = pg.time.Clock()
 screen_size = ((cell_size + cell_margin) * matrix_cols, (cell_size + cell_margin) * matrix_rows)
 screen = pg.display.set_mode(screen_size)
+
+font_small = pg.font.Font('c:\ROBO\pygame\consola.ttf', int(cell_size * 0.75))
+font_big = pg.font.Font('c:\ROBO\pygame\consolab.ttf', int(screen_size[0] / 1.5))
 
 
 def create_matrix():
@@ -89,6 +93,7 @@ def game_set():
 def game_run():
     global snake_dir
     frame = 1
+    score = 0
 
     while True:
         key = 0
@@ -139,15 +144,27 @@ def game_run():
                 time.sleep(1.5)
                 return
 
-
+            score += 4 + 2 * len(snake_coor)
             create_matrix()
             set_obj()
 
+        title, title_rect = render_text('Snake Game', font_small, color_text)
+        grade, grade_rect = render_text('Score: %s'% score, font_small, color_text)
+        title_rect.center = ((cell_size + cell_margin) * matrix_cols / 2, cell_size / 1.5)
+        grade_rect.center = ((cell_size + cell_margin) * 4, cell_size / 1.5)
+
         screen.fill(color_bg)
         draw_matrix()
+        screen.blit(grade, grade_rect)
+        screen.blit(title, title_rect)
         pg.display.update()
         frame += 1
         clock.tick(fps)
+
+def render_text(text, font, color):
+    Text = font.render(text, True, color)
+    Text_rect = Text.get_rect()
+    return Text, Text_rect
         
 def checkForwardCell(row, col):
     if snake_dir == 'up':
