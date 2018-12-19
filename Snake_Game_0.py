@@ -32,7 +32,7 @@ clock = pg.time.Clock()
 screen_size = ((cell_size + cell_margin) * matrix_cols, (cell_size + cell_margin) * matrix_rows)
 screen = pg.display.set_mode(screen_size)
 
-font_small = pg.font.Font('c:\ROBO\pygame\consola.ttf', int(cell_size * 0.75))
+font_small = pg.font.Font('c:\ROBO\pygame\consola.ttf', int(cell_size * 0.75)) #set your directory
 font_big = pg.font.Font('c:\ROBO\pygame\consolab.ttf', int(screen_size[0] / 1.5))
 
 
