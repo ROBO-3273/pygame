@@ -32,8 +32,10 @@ clock = pg.time.Clock()
 screen_size = ((cell_size + cell_margin) * matrix_cols, (cell_size + cell_margin) * matrix_rows)
 screen = pg.display.set_mode(screen_size)
 
-font_small = pg.font.Font('c:\ROBO\pygame\consola.ttf', int(cell_size * 0.75)) #set your directory
-font_big = pg.font.Font('c:\ROBO\pygame\consolab.ttf', int(screen_size[0] / 1.5))
+MyDir = 'C:/ROBO/pygame/' #set your directory
+
+font_small = pg.font.Font(MyDir +  'consola.ttf', int(cell_size * 0.75)) 
+font_big = pg.font.Font(MyDir + 'consolab.ttf', int(screen_size[0] / 8))
 
 
 def create_matrix():
@@ -89,6 +91,20 @@ def game_set():
     create_matrix()
     create_apple()
     set_obj()
+    pressed = False
+    textA, textA_rect = render_text('SNAKE GAME', font_big, color_text)
+    textB, textB_rect = render_text('Press Any Key To Start', font_small, color_text)
+    textA_rect.center = (screen_size[0] / 2, screen_size[1] / 2)
+    textB_rect.center = (screen_size[0] / 2, screen_size[1] / 2 + textA_rect.height + textB_rect. height / 2 + 30)
+    while not pressed:
+        for event in pg.event.get():
+            screen.blit(textA, textA_rect)
+            screen.blit(textB, textB_rect)
+            if event.type == pg.KEYDOWN:
+                pressed = True
+            pg.display.update()
+
+        
 
 def game_run():
     global snake_dir
@@ -141,7 +157,14 @@ def game_run():
                 snake_coor.insert(0, (row + F_row, col + F_col))
                 create_apple()
             else:
-                time.sleep(1.5)
+                textA, textA_rect = render_text('GAME OVER', font_big, color_text)
+                textB, textB_rect = render_text('Score: %s'% score, font_small, color_text)
+                textA_rect.center = (screen_size[0] / 2, screen_size[1] / 2)
+                textB_rect.center = (screen_size[0] / 2, screen_size[1] / 2 + textA_rect.height + textB_rect. height / 2 + 30)
+                screen.blit(textA, textA_rect)
+                screen.blit(textB, textB_rect)
+                pg.display.update()
+                time.sleep(3)
                 return
 
             score += 4 + 2 * len(snake_coor)
@@ -150,7 +173,7 @@ def game_run():
 
         title, title_rect = render_text('Snake Game', font_small, color_text)
         grade, grade_rect = render_text('Score: %s'% score, font_small, color_text)
-        title_rect.center = ((cell_size + cell_margin) * matrix_cols / 2, cell_size / 1.5)
+        title_rect.center = (screen_size[0] / 2, cell_size / 1.5)
         grade_rect.center = ((cell_size + cell_margin) * 4, cell_size / 1.5)
 
         screen.fill(color_bg)
