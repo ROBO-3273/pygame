@@ -169,6 +169,8 @@ def game_run():
                 snake_coor.pop()
             elif forwardCell == 3:
                 snake_coor.insert(0, (row + F_row, col + F_col))
+                pg.mixer.music.load(MyDir + "EatSound_CC0.ogg")
+                pg.mixer.music.play()
                 create_apple()
             elif life:
                 life -= 1
